@@ -20,12 +20,20 @@ async function signupUser() {
 }
 
 
-// LOGIN
-async function loginUser() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+// LOGIN USER
+async function loginUser(event) {
+    event.preventDefault(); // Stop form from refreshing the page
 
-    let { data, error } = await supabaseClient.auth.signInWithPassword({
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+
+    if (!email || !password) {
+        alert("Please enter both email and password");
+        return;
+    }
+
+    // Supabase Login Request
+    const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password
     });
@@ -35,6 +43,7 @@ async function loginUser() {
         return;
     }
 
-    // Redirect to dashboard
-    window.location.href = "dashboard.html";
+    // SUCCESS
+    alert("Login successful!");
+    window.location.href = "../dashboard/dashboard.html"; // Redirect to your dashboard
 }
