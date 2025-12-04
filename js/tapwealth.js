@@ -15,8 +15,10 @@ async function signupUser() {
         return;
     }
 
-    alert("Account created! Check your email to confirm.");
+    alert("Account created! Check your email for confirmation.");
+    window.location.href = "login.html";
 }
+
 
 // LOGIN
 async function loginUser() {
@@ -35,14 +37,4 @@ async function loginUser() {
 
     // Redirect to dashboard
     window.location.href = "dashboard.html";
-}
-
-// CHECK LOGIN STATUS (Dashboard)
-async function checkLogin() {
-    const { data } = await supabaseClient.auth.getUser();
-
-    if (!data.user) {
-        // Not logged in — send user to login
-        window.location.href = "login.html";
-    }
 }
