@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - TapWealth</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="loadDashboard()">
+  <header>
+    <h1>TapWealth Dashboard</h1>
+    <nav>
+      <a href="wallet.html">Wallet</a>
+      <a href="withdrawal.html">Withdraw</a>
+      <a href="index.html" onclick="logout()">Logout</a>
+    </nav>
+  </header>
+
+  <section class="content">
+    <h2>Your Tasks</h2>
+    <div id="offerwalls"></div>
+  </section>
+
+  <script src="supabase.js"></script>
+  <script src="offerwalls.js"></script>
+  <script src="tapwealth.js"></script>
+</body>
+</html>
