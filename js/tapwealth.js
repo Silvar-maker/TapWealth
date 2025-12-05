@@ -62,3 +62,28 @@ async function loginUser(event) {
     alert("Login successful!");
     window.location.href = "../dashboard/dashboard.html"; // Redirect to your dashboard
 }
+
+async function loadDashboard() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    window.location.href = "auth/login.html";
+    return;
+  }
+
+  document.getElementById("userEmail").textContent = "Logged in as: " + user.email;
+
+  const { data: wallet } = await supabase
+    .from("wallets")
+    .select("balance_usd")
+    .eq("user_id", user.id)
+    .single();
+
+  document.getElementById("userBalance").textContent =
+    "Balance: $" + wallet.balance_usd;
+}
+
+// Auto-load dashboard if on dashboard.html
+if (window.location.pathname.includes("dashboard.html")) {
+  loadDashboard();
+}
