@@ -1,24 +1,39 @@
 // js/tapwealth.js
 
 // SIGN UP
-async function signupUser() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+async function signupUser(event) {
+  event.preventDefault();
 
-    let { data, error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password
-    });
+  const email = document.getElementById("signupEmail").value;
+  const password = document.getElementById("signupPassword").value;
 
-    if (error) {
-        alert("Signup failed: " + error.message);
-        return;
-    }
+  // 1. Create user in Supabase Auth
+  const { data, error } = await supabase.auth.signUp({
+    email: email,
+    password: password
+  });
 
-    alert("Account created! Check your email for confirmation.");
-    window.location.href = "login.html";
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  const user = data.user;
+
+  // 2. Create user record in "users" table
+  await supabase.from("users").insert([
+    { id: user.id, email: email, password: password }
+  ]);
+
+  // 3. Create wallet for user
+  await supabase.from("wallets").insert([
+    { user_id: user.id, balance_usd: 0 }
+  ]);
+
+  alert("Account created! Redirecting to dashboard...");
+
+  window.location.href = "../dashboard.html";
 }
-
 
 // LOGIN USER
 async function loginUser(event) {
